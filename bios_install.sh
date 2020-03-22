@@ -40,7 +40,7 @@ pacstrap /mnt base linux linux-firmware
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
-arch-chroot /mnt
+cat <<EOF > /mnt/root/chroot_cmds.sh
 
 ln -sf /usr/share/zoneinfo/Europe/Rome /etc/localtime
 
@@ -59,3 +59,12 @@ mkinitcpio -P
 (echo root; echo root) | passwd
 
 pacman -Sy grub
+
+grub-install --target=i386-pc $PARTITION
+
+grub-mkconfig -o /boot/grub/grub.cfg
+
+exit
+EOF
+
+arch-chroot /mnt /root/chroot_cmds.sh
