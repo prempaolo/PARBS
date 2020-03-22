@@ -31,10 +31,10 @@ PARTITION="$(fdisk -l | grep 'Disk /dev' | sed "${CHOICE}q;d" | awk -F " " '{ pr
 
 # Creates three partitions, /, /home and swap
 [ $UEFI ] && 
-	(echo n; echo p; echo 1; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 2; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo ""; echo t; echo 2; echo 82; echo w) | fdisk "$PARTITION" ||
-	(echo n; echo p; echo 1; echo ""; echo "+260M"; echo t; echo ef; echo n; echo p; echo 2; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 4; echo ""; echo ""; echo t; echo 3; echo 82; echo w) | fdisk "$PARTITION"
+	{ (echo n; echo p; echo 1; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 2; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo ""; echo t; echo 2; echo 82; echo w) | fdisk "$PARTITION"; } ||
+	{ (echo n; echo p; echo 1; echo ""; echo "+260M"; echo t; echo ef; echo n; echo p; echo 2; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 4; echo ""; echo ""; echo t; echo 3; echo 82; echo w) | fdisk "$PARTITION"; }
 
-[ $UEFI ] && mkdir /mnt/efi && mount "$PARTITION"1
+[ $UEFI ] && mkdir /mnt/efi && mount "$PARTITION"1 /mnt/efi
 
 [ $UEFI ] && mkfs.ext4 "$PARTITION"2 || mkfs.ext4 "$PARTITION"1
 [ $UEFI ] && { mkswap "$PARTITION"3; swapon "$PARTITION"3; } || { mkswap "$PARTITION"2; swapon "$PARTITION"2 }
