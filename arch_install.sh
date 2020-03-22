@@ -30,19 +30,19 @@ done
 PARTITION="$(fdisk -l | grep 'Disk /dev' | sed "${CHOICE}q;d" | awk -F " " '{ print substr($2, 1, length($2)-1) }')"
 
 # Creates three partitions, /, /home and swap
-[ $UEFI ] && 
-	{ (echo n; echo p; echo 1; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 2; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo ""; echo t; echo 2; echo 82; echo w) | fdisk "$PARTITION"; } ||
-	{ (echo n; echo p; echo 1; echo ""; echo "+260M"; echo t; echo ef; echo n; echo p; echo 2; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 4; echo ""; echo ""; echo t; echo 3; echo 82; echo w) | fdisk "$PARTITION"; }
+if [ $UEFI ]; then
+	(echo n; echo p; echo 1; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 2; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo ""; echo t; echo 2; echo 82; echo w) | fdisk "$PARTITION";
+else
+	(echo n; echo p; echo 1; echo ""; echo "+260M"; echo t; echo ef; echo n; echo p; echo 2; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 4; echo ""; echo ""; echo t; echo 3; echo 82; echo w) | fdisk "$PARTITION";
+fi
 
-[ $UEFI ] && mkdir /mnt/efi && mount "$PARTITION"1 /mnt/efi
-
-[ $UEFI ] && mkfs.ext4 "$PARTITION"2 || mkfs.ext4 "$PARTITION"1
-[ $UEFI ] && { mkswap "$PARTITION"3; swapon "$PARTITION"3; } || { mkswap "$PARTITION"2; swapon "$PARTITION"2 }
-[ $UEFI ] && mkfs.ext4 "$PARTITION"4 || mkfs.ext4 "$PARTITION"3
-
-[ $UEFI ] && mount "$PARTITION"2 /mnt || mount "$PARTITION"1 /mnt
+if [ $UEFI ]; then mkfs.ext4 "$PARTITION"2; else mkfs.ext4 "$PARTITION"1; fi
+if [ $UEFI ]; then mkswap "$PARTITION"3; swapon "$PARTITION"3; else mkswap "$PARTITION"2; swapon "$PARTITION"2; fi
+if [ $UEFI ]; then mkfs.ext4 "$PARTITION"4; else mkfs.ext4 "$PARTITION"3; fi
+if [ $UEFI ]; then mount "$PARTITION"2 /mnt; else mount "$PARTITION"1 /mnt; fi
 mkdir /mnt/home
-[ $UEFI ] && mount "$PARTITION"4 /mnt/home || mount "$PARTITION"3 /mnt/home
+if [ $UEFI ]; then mount "$PARTITION"4 /mnt/home; else mount "$PARTITION"3 /mnt/home; fi
+if [ $UEFI ]; then mkdir /mnt/efi; else mount "$PARTITION"1 /mnt/efi; fi
 
 pacstrap /mnt base linux linux-firmware
 
