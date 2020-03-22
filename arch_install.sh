@@ -31,9 +31,9 @@ PARTITION="$(fdisk -l | grep 'Disk /dev' | sed "${CHOICE}q;d" | awk -F " " '{ pr
 
 # Creates three partitions, /, /home and swap
 if [ $UEFI ]; then
-	(echo n; echo p; echo 1; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 2; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo ""; echo t; echo 2; echo 82; echo w) | fdisk "$PARTITION";
-else
 	(echo n; echo p; echo 1; echo ""; echo "+260M"; echo t; echo ef; echo n; echo p; echo 2; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 4; echo ""; echo ""; echo t; echo 3; echo 82; echo w) | fdisk "$PARTITION";
+else
+	(echo n; echo p; echo 1; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 2; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo ""; echo t; echo 2; echo 82; echo w) | fdisk "$PARTITION";
 fi
 
 if [ $UEFI ]; then mkfs.ext4 "$PARTITION"2; else mkfs.ext4 "$PARTITION"1; fi
