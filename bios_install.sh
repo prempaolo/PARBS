@@ -27,14 +27,14 @@ PARTITION="$(fdisk -l | grep 'Disk /dev' | sed "${CHOICE}q;d" | awk -F " " '{ pr
 
 (echo n; echo p; echo 1; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 2; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo ""; echo t; echo 2; echo 82; echo w) | fdisk "$PARTITION"
 
-mkfs.ext4 /dev/"$PARTITION"1
-mkswap /dev/"$PARTITION"2
-swapon /dev/"$PARTITION"2
-mkfs.ext4 /dev/"$PARTITION"3
+mkfs.ext4 "$PARTITION"1
+mkswap "$PARTITION"2
+swapon "$PARTITION"2
+mkfs.ext4 "$PARTITION"3
 
-mount /dev/"$PARTITION"1 /mnt
+mount "$PARTITION"1 /mnt
 mkdir /mnt/home
-mount /dev/"$PARTITION"3 /mnt/home
+mount "$PARTITION"3 /mnt/home
 
 pacstrap /mnt base linux linux-firmware
 
