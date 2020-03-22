@@ -49,6 +49,5 @@ pacstrap /mnt base linux linux-firmware
 genfstab -U /mnt >> /mnt/etc/fstab
 
 # Commands to execute as chroot
-[ $UEFI ] && cp uefi_chroot_cmds.sh /mnt/root/ || cp bios_chroot_cmds.sh /mnt/root
-
-arch-chroot /mnt /root/chroot_cmds.sh
+if [ $UEFI ]; then cp uefi_chroot_cmds.sh /mnt/root/; else cp bios_chroot_cmds.sh /mnt/root; fi
+if [ $UEFI ]; then arch-chroot /mnt /root/uefi_chroot_cmds.sh; else arch-chroot /mnt /root/bios_chroot_cmds.sh
