@@ -67,4 +67,6 @@ grub-mkconfig -o /boot/grub/grub.cfg
 exit
 EOF
 
+chmod +x /mnt/root/chroot_cmds.sh
+
 arch-chroot /mnt /root/chroot_cmds.sh
