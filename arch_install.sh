@@ -31,11 +31,12 @@ PARTITION="$(fdisk -l | grep 'Disk /dev' | sed "${CHOICE}q;d" | awk -F " " '{ pr
 
 # Creates three partitions, /, /home and swap
 if [ $UEFI ]; then
-	(echo n; echo p; echo 1; echo ""; echo "+260M"; echo t; echo ef; echo n; echo p; echo 2; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 4; echo ""; echo ""; echo t; echo 3; echo 82; echo w) | fdisk "$PARTITION";
+	(echo n; echo p; echo 1; echo ""; echo "+260M"; echo t; echo ef; echo n; echo p; echo 2; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo ""; echo ""; echo t; echo 3; echo 82; echo w) | fdisk "$PARTITION";
 else
 	(echo n; echo p; echo 1; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 2; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo ""; echo t; echo 2; echo 82; echo w) | fdisk "$PARTITION";
 fi
 
+if [ $UEFI ]; then mkfs.fat -F32 "$PARTITION"1; fi
 if [ $UEFI ]; then mkfs.ext4 "$PARTITION"2; else mkfs.ext4 "$PARTITION"1; fi
 if [ $UEFI ]; then mkswap "$PARTITION"3; swapon "$PARTITION"3; else mkswap "$PARTITION"2; swapon "$PARTITION"2; fi
 if [ $UEFI ]; then mkfs.ext4 "$PARTITION"4; else mkfs.ext4 "$PARTITION"3; fi
@@ -50,4 +51,4 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 # Commands to execute as chroot
 if [ $UEFI ]; then cp uefi_chroot_cmds.sh /mnt/root/; else cp bios_chroot_cmds.sh /mnt/root; fi
-if [ $UEFI ]; then arch-chroot /mnt /root/uefi_chroot_cmds.sh; else arch-chroot /mnt /root/bios_chroot_cmds.sh
+if [ $UEFI ]; then arch-chroot /mnt /root/uefi_chroot_cmds.sh; else arch-chroot /mnt /root/bios_chroot_cmds.sh; fi
