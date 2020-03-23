@@ -16,7 +16,7 @@ mkinitcpio -P
 
 pacman -Sy --noconfirm grub iw netctl dhcpcd
 
-grub-install --target=i386-pc $PARTITION
+grub-install --target=i386-pc "$1"
 
 grub-mkconfig -o /boot/grub/grub.cfg
 

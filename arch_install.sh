@@ -51,4 +51,4 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 # Commands to execute as chroot
 if [ $UEFI = true ]; then cp uefi_chroot_cmds.sh /mnt/root/; else cp bios_chroot_cmds.sh /mnt/root; fi
-if [ $UEFI = true ]; then arch-chroot /mnt /root/uefi_chroot_cmds.sh; else arch-chroot /mnt /root/bios_chroot_cmds.sh; fi
+if [ $UEFI = true ]; then arch-chroot /mnt /root/uefi_chroot_cmds.sh; else arch-chroot /mnt /root/bios_chroot_cmds.sh "$PARTITION"; fi
