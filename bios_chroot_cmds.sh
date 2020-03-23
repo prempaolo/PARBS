@@ -14,10 +14,12 @@ mkinitcpio -P
 
 (echo root; echo root) | passwd
 
-pacman -Sy grub
+pacman -Sy --noconfirm grub iw netctl dhcpcd
 
 grub-install --target=i386-pc $PARTITION
 
 grub-mkconfig -o /boot/grub/grub.cfg
+
+systemctl enable dhcpcd
 
 exit

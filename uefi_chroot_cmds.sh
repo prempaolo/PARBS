@@ -14,10 +14,12 @@ mkinitcpio -P
 
 (echo root; echo root) | passwd
 
-pacman -Sy grub efibootmgr
+pacman -Sy --noconfirm grub efibootmgr iw netctl dhcpcd
 
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 
 grub-mkconfig -o /boot/grub/grub.cfg
+
+systemctl enable dhcpcd
 
 exit

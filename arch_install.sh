@@ -8,7 +8,11 @@ UEFI=false
 ping -q -c 1 -W 1 8.8.8.8 &>/dev/null || { echo "Setup an internet connection before proceeding"; exit 1; }
 
 # Check if system is UEFI or BIOS
-ls /sys/firmware/efi/efivars >/dev/null && UEFI=true
+ls /sys/firmware/efi/efivars &>/dev/null && UEFI=true
+
+echo $UEFI
+
+sleep 2
 
 timedatectl set-ntp true
 
