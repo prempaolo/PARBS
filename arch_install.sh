@@ -45,7 +45,7 @@ mkdir /mnt/home
 if [ $UEFI ]; then mount "$PARTITION"4 /mnt/home; else mount "$PARTITION"3 /mnt/home; fi
 [ $UEFI ] && { mkdir /mnt/efi; mount "$PARTITION"1 /mnt/efi; }
 
-pacstrap /mnt base linux linux-firmware
+pacstrap /mnt base base-devel linux linux-firmware vim wifi-menu
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
