@@ -242,6 +242,7 @@ echo "$edition" > "/home/$name/.local/share/larbs/wm"; chown -R "$name":wheel "/
 
 
 ############## MODIFIED #################
+dialog --title "LARBS Installation" --infobox "Installing \`oh-my-zsh\`" 5 70
 git clone https://github.com/ohmyzsh/ohmyzsh "/home/$name/.local/share/oh-my-zsh"
 
 ############## END MODIFIED #################
