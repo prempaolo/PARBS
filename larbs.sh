@@ -240,6 +240,12 @@ echo "$edition" > "/home/$name/.local/share/larbs/wm"; chown -R "$name":wheel "/
 [ "$distro" = arch ] && newperms "%wheel ALL=(ALL) ALL #LARBS
 %wheel ALL=(ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/systemctl suspend,/usr/bin/wifi-menu,/usr/bin/mount,/usr/bin/umount,/usr/bin/pacman -Syu,/usr/bin/pacman -Syyu,/usr/bin/packer -Syu,/usr/bin/packer -Syyu,/usr/bin/systemctl restart NetworkManager,/usr/bin/rc-service NetworkManager restart,/usr/bin/pacman -Syyu --noconfirm,/usr/bin/loadkeys,/usr/bin/yay,/usr/bin/pacman -Syyuw --noconfirm"
 
+
+############## MODIFIED #################
+git clone https://github.com/ohmyzsh/ohmyzsh "/home/$name/.local/share/oh-my-zsh"
+
+############## END MODIFIED #################
+
 # Last message! Install complete!
 finalize
 clear
