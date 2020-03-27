@@ -6,6 +6,7 @@
 ,ttf-linux-libertine,"provides the sans and serif fonts for LARBS."
 A,ttf-ubuntu-mono-derivative-powerline-git,"font used in dwm"
 ,ttf-font-awesome,"font I use in dwm"
+,ttf-dejavu,"font used for monospace"
 ,otf-font-awesome,"font I use in dwm"
 A,ttf-font-awesome-4,"font I use in dwm"
 A,nerd-fonts-hack,"main font I use in termite"
