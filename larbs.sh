@@ -243,11 +243,11 @@ echo "$edition" > "/home/$name/.local/share/larbs/wm"; chown -R "$name":wheel "/
 
 ############## MODIFIED #################
 dialog --title "LARBS Installation" --infobox "Installing \`oh-my-zsh\`" 5 70
-git clone https://github.com/ohmyzsh/ohmyzsh "/home/$name/.local/share/oh-my-zsh"
+git clone https://github.com/ohmyzsh/ohmyzsh "/home/$name/.local/share/oh-my-zsh" >/dev/null 2>&1
 
 dialog --title "LARBS Installation" --infobox "Downloading wallpapers" 5 70
 [ ! -d "/home/$name/Pictures" ] && mkdir "/home/$name/Pictures"
-git clone https://github.com/prempaolo/wallpapers "/home/$name/Pictures/wallpapers"
+git clone https://github.com/prempaolo/wallpapers "/home/$name/Pictures/wallpapers" >/dev/null 2>&1
 
 ############## END MODIFIED #################
 
