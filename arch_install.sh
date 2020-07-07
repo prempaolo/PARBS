@@ -31,7 +31,7 @@ PARTITION="$(fdisk -l | grep 'Disk /dev' | sed "${CHOICE}q;d" | awk -F " " '{ pr
 
 # Creates three partitions, /, /home and swap
 if [ $UEFI = true ]; then
-	(echo n; echo p; echo 1; echo ""; echo "+260M"; echo t; echo ef; echo n; echo p; echo 2; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo ""; echo ""; echo t; echo 3; echo 82; echo w) | fdisk "$PARTITION";
+	(echo o; echo n; echo p; echo 1; echo ""; echo "+260M"; echo t; echo ef; echo n; echo p; echo 2; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo ""; echo ""; echo t; echo 3; echo 82; echo w) | fdisk "$PARTITION";
 else
 	sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk "$PARTITION"
   o # clear the in memory partition table

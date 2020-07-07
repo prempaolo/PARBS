@@ -16,7 +16,7 @@ mkinitcpio -P
 
 (echo root; echo root) | passwd
 
-pacman -Sy --noconfirm grub efibootmgr iw netctl dhcpcd
+pacman -Sy --noconfirm grub efibootmgr iw netctl dhcpcd dialog
 
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 

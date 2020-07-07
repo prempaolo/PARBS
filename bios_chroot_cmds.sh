@@ -16,7 +16,7 @@ mkinitcpio -P
 
 (echo root; echo root) | passwd
 
-pacman -Sy --noconfirm grub iw netctl dhcpcd
+pacman -Sy --noconfirm grub iw netctl dhcpcd dialog
 
 grub-install --target=i386-pc "$1"
 
