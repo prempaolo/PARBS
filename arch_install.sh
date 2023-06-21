@@ -1,7 +1,7 @@
 #!/bin/sh
 
-ROOT_PARTITION_SPACE="+10G"
-SWAP_PARTITION_SPACE="+1G"
+ROOT_PARTITION_SPACE="+30G"
+SWAP_PARTITION_SPACE="+8G"
 UEFI=false
 
 # Check if there is a working internet connection, otherwise exits
