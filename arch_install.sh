@@ -33,30 +33,7 @@ PARTITION="$(fdisk -l | grep 'Disk /dev' | sed "${CHOICE}q;d" | awk -F " " '{ pr
 if [ $UEFI = true ]; then
 	(echo o; echo n; echo p; echo 1; echo ""; echo "+260M"; echo t; echo ef; echo n; echo p; echo 2; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo ""; echo ""; echo t; echo 3; echo 82; echo w) | fdisk "$PARTITION";
 else
-	sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk "$PARTITION"
-  o # clear the in memory partition table
-  n # new partition
-  p # primary partition
-  1 # partition number 1
-    # default - start at beginning of disk 
-  $ROOT_PARTITION_SPACE # Root partition space
-  n # new partition
-  p # primary partition
-  2 # partition number 1
-    # default - start at beginning of disk 
-  $SWAP_PARTITION_SPACE # Swap partition space
-  n # new partition
-  p # primary partition
-  3 # partion number 2
-    # default, start immediately after preceding partition
-    # default, extend partition to end of disk
-  t # ???
-  2 # 
-  82 # 
-  w # write the partition table
-  q # and we're done
-EOF
-	#(echo n; echo p; echo 1; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 2; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo ""; echo t; echo 2; echo 82; echo w) | fdisk "$PARTITION";
+  (echo n; echo p; echo 1; echo ""; echo "$ROOT_PARTITION_SPACE"; echo n; echo p; echo 2; echo ""; echo "$SWAP_PARTITION_SPACE"; echo n; echo p; echo 3; echo ""; echo ""; echo t; echo 2; echo 82; echo w) | fdisk "$PARTITION";
 fi
 
 [ $UEFI = true ] && mkfs.fat -F32 "$PARTITION"1
